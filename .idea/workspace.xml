@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f9e7d86e-cb82-4793-9eda-8ba072f87b4e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/CategoryControllerRA.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/OrderControllerRA.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/ProductControllerRA.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/tests/TokenUtil.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2jmkkPyAeEcW5QvZdPDavqk9ctP" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.DscommerceRestaassuredApplication.executor": "Run",
+    "JUnit.ProductControllerRA.findByIdShouldReturnProductWhenIdExists.executor": "Run",
+    "JUnit.com.devsuperior.decommerce.controllers in dscommerce-restaassured.executor": "Run",
+    "Maven.dscommerce-restaassured [test].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Temp/dscommerce-restaassured/dscommerce-restaassured/src/test/java",
+    "last_opened_file_path": "C:/Temp/dscommerce-projeto-base-sb3.2.5",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
+  }
+}]]></component>
+  <component name="RunManager" selected="JUnit.com.devsuperior.decommerce.controllers in dscommerce-restaassured">
+    <configuration name="DscommerceRestaassuredApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.devsuperior.decommerce.DscommerceRestaassuredApplication" />
+      <module name="dscommerce-restaassured" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.devsuperior.decommerce.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductControllerRA.findByIdShouldReturnProductWhenIdExists" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="dscommerce-restaassured" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.devsuperior.decommerce.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.devsuperior.decommerce.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.devsuperior.decommerce.controllers.ProductControllerRA" />
+      <option name="METHOD_NAME" value="findByIdShouldReturnProductWhenIdExists" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.devsuperior.decommerce.controllers in dscommerce-restaassured" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="dscommerce-restaassured" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.devsuperior.decommerce.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.devsuperior.decommerce.controllers" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.com.devsuperior.decommerce.controllers in dscommerce-restaassured" />
+        <item itemvalue="JUnit.ProductControllerRA.findByIdShouldReturnProductWhenIdExists" />
+        <item itemvalue="Application.DscommerceRestaassuredApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f9e7d86e-cb82-4793-9eda-8ba072f87b4e" name="Changes" comment="" />
+      <created>1721999782208</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1721999782208</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>

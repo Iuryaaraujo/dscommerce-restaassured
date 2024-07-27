@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="aula-0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../dscommerce-backend-aulas-cap05-3.2.5/target/aula-0.0.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

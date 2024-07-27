@@ -1,0 +1,2178 @@
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/ResourceNotFoundException.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/ResourceNotFoundException.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/ResourceNotFoundException.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/ResourceNotFoundException.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,9 +0,0 @@
+-package com.devsuperior.demo.services.exceptions;
+-
+-// Exceção de recurso não encontrado
+-public class ResourceNotFoundException extends RuntimeException {
+-
+-    public ResourceNotFoundException(String msg) {
+-        super(msg);
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationToken.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationToken.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationToken.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationToken.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,43 +0,0 @@
+-package com.devsuperior.demo.config.customgrant;
+-
+-import org.springframework.lang.Nullable;
+-import org.springframework.security.core.Authentication;
+-import org.springframework.security.oauth2.core.AuthorizationGrantType;
+-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationGrantAuthenticationToken;
+-
+-import java.util.Collections;
+-import java.util.HashSet;
+-import java.util.Map;
+-import java.util.Set;
+-
+-public class CustomPasswordAuthenticationToken extends OAuth2AuthorizationGrantAuthenticationToken {
+-
+-	private static final long serialVersionUID = 1L;
+-	
+-	private final String username;
+-	private final String password;
+-	private final Set<String> scopes;
+-	
+-	public CustomPasswordAuthenticationToken(Authentication clientPrincipal,
+-			@Nullable Set<String> scopes, @Nullable Map<String, Object> additionalParameters) {
+-		
+-		super(new AuthorizationGrantType("password"), clientPrincipal, additionalParameters);
+-		
+-		this.username = (String) additionalParameters.get("username");
+-		this.password = (String) additionalParameters.get("password");
+-		this.scopes = Collections.unmodifiableSet(
+-				scopes != null ? new HashSet<>(scopes) : Collections.emptySet());
+-	}
+-
+-	public String getUsername() {
+-		return this.username;
+-	}
+-	
+-	public String getPassword() {
+-		return this.password;
+-	}
+-
+-	public Set<String> getScopes() {
+-		return this.scopes;
+-	}
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/EventService.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/EventService.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/EventService.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/EventService.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,36 +0,0 @@
+-package com.devsuperior.demo.services;
+-
+-import com.devsuperior.demo.dto.CityDTO;
+-import com.devsuperior.demo.entities.City;
+-import com.devsuperior.demo.repositories.CityRepository;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.data.domain.Sort;
+-import org.springframework.stereotype.Service;
+-import org.springframework.transaction.annotation.Transactional;
+-
+-import java.util.List;
+-
+-@Service
+-public class CityService {
+-
+-    @Autowired
+-    private CityRepository repository;
+-
+-    @Transactional(readOnly = true)
+-    public List<CityDTO> findAll() {
+-        List<City> list = repository.findAll(Sort.by("name"));
+-        return list.stream().map(CityDTO::new).toList();
+-    }
+-
+-    @Transactional
+-    public CityDTO insert(CityDTO dto) {
+-        City entity = new City();
+-        copiaDtoToEntity(dto, entity);
+-        entity = repository.save(entity);
+-        return new CityDTO(entity);
+-    }
+-
+-    private void copiaDtoToEntity(CityDTO dto, City entity) {
+-        entity.setName(dto.getName());
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/FieldMessage.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/FieldMessage.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/FieldMessage.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/FieldMessage.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,33 +0,0 @@
+-package com.devsuperior.demo.controllers.exceptions;
+-
+-// Mensagem de campo
+-// para tratar as validações
+-public class FieldMessage {
+-
+-    private String fieldName;
+-    private String message;
+-
+-    public FieldMessage() {
+-    }
+-
+-    public FieldMessage(String fieldName, String message) {
+-        this.fieldName = fieldName;
+-        this.message = message;
+-    }
+-
+-    public String getFieldName() {
+-        return fieldName;
+-    }
+-
+-    public void setFieldName(String fieldName) {
+-        this.fieldName = fieldName;
+-    }
+-
+-    public String getMessage() {
+-        return message;
+-    }
+-
+-    public void setMessage(String message) {
+-        this.message = message;
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationProvider.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationProvider.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationProvider.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationProvider.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,144 +0,0 @@
+-package com.devsuperior.demo.config.customgrant;
+-
+-import org.springframework.security.authentication.AuthenticationProvider;
+-import org.springframework.security.core.Authentication;
+-import org.springframework.security.core.AuthenticationException;
+-import org.springframework.security.core.context.SecurityContextHolder;
+-import org.springframework.security.core.userdetails.UserDetails;
+-import org.springframework.security.core.userdetails.UserDetailsService;
+-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+-import org.springframework.security.crypto.password.PasswordEncoder;
+-import org.springframework.security.oauth2.core.*;
+-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+-import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
+-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
+-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
+-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+-import org.springframework.security.oauth2.server.authorization.context.AuthorizationServerContextHolder;
+-import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
+-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
+-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+-import org.springframework.util.Assert;
+-
+-import java.security.Principal;
+-import java.util.HashSet;
+-import java.util.Set;
+-import java.util.stream.Collectors;
+-
+-public class CustomPasswordAuthenticationProvider implements AuthenticationProvider {
+-
+-	private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
+-	private final OAuth2AuthorizationService authorizationService;
+-	private final UserDetailsService userDetailsService;
+-	private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
+-	private final PasswordEncoder passwordEncoder;
+-	private String username = "";
+-	private String password = "";
+-	private Set<String> authorizedScopes = new HashSet<>();
+-
+-	public CustomPasswordAuthenticationProvider(OAuth2AuthorizationService authorizationService,
+-			OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator, 
+-			UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+-		
+-		Assert.notNull(authorizationService, "authorizationService cannot be null");
+-		Assert.notNull(tokenGenerator, "TokenGenerator cannot be null");
+-		Assert.notNull(userDetailsService, "UserDetailsService cannot be null");
+-		Assert.notNull(passwordEncoder, "PasswordEncoder cannot be null");
+-		this.authorizationService = authorizationService;
+-		this.tokenGenerator = tokenGenerator;
+-		this.userDetailsService = userDetailsService;
+-		this.passwordEncoder = passwordEncoder;
+-	}
+-	
+-	@Override
+-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+-		
+-		CustomPasswordAuthenticationToken customPasswordAuthenticationToken = (CustomPasswordAuthenticationToken) authentication;
+-		OAuth2ClientAuthenticationToken clientPrincipal = getAuthenticatedClientElseThrowInvalidClient(customPasswordAuthenticationToken);
+-		RegisteredClient registeredClient = clientPrincipal.getRegisteredClient();
+-		username = customPasswordAuthenticationToken.getUsername();
+-		password = customPasswordAuthenticationToken.getPassword();	
+-		
+-		UserDetails user = null;
+-		try {
+-			user = userDetailsService.loadUserByUsername(username);
+-		} catch (UsernameNotFoundException e) {
+-			throw new OAuth2AuthenticationException("Invalid credentials");
+-		}
+-				
+-		if (!passwordEncoder.matches(password, user.getPassword()) || !user.getUsername().equals(username)) {
+-			throw new OAuth2AuthenticationException("Invalid credentials");
+-		}
+-		
+-		authorizedScopes = user.getAuthorities().stream()
+-				.map(scope -> scope.getAuthority())
+-				.filter(scope -> registeredClient.getScopes().contains(scope))
+-				.collect(Collectors.toSet());
+-		
+-		//-----------Create a new Security Context Holder Context----------
+-		OAuth2ClientAuthenticationToken oAuth2ClientAuthenticationToken = (OAuth2ClientAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+-		CustomUserAuthorities customPasswordUser = new CustomUserAuthorities(username, user.getAuthorities());
+-		oAuth2ClientAuthenticationToken.setDetails(customPasswordUser);
+-		
+-		var newcontext = SecurityContextHolder.createEmptyContext();
+-		newcontext.setAuthentication(oAuth2ClientAuthenticationToken);
+-		SecurityContextHolder.setContext(newcontext);		
+-		
+-		//-----------TOKEN BUILDERS----------
+-		DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
+-				.registeredClient(registeredClient)
+-				.principal(clientPrincipal)
+-				.authorizationServerContext(AuthorizationServerContextHolder.getContext())
+-				.authorizedScopes(authorizedScopes)
+-				.authorizationGrantType(new AuthorizationGrantType("password"))
+-				.authorizationGrant(customPasswordAuthenticationToken);
+-		
+-		OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient)
+-				.attribute(Principal.class.getName(), clientPrincipal)
+-				.principalName(clientPrincipal.getName())
+-				.authorizationGrantType(new AuthorizationGrantType("password"))
+-				.authorizedScopes(authorizedScopes);
+-		
+-		//-----------ACCESS TOKEN----------
+-		OAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
+-		OAuth2Token generatedAccessToken = this.tokenGenerator.generate(tokenContext);
+-		if (generatedAccessToken == null) {
+-			OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
+-					"The token generator failed to generate the access token.", ERROR_URI);
+-			throw new OAuth2AuthenticationException(error);
+-		}
+-
+-		OAuth2AccessToken accessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
+-				generatedAccessToken.getTokenValue(), generatedAccessToken.getIssuedAt(),
+-				generatedAccessToken.getExpiresAt(), tokenContext.getAuthorizedScopes());
+-		if (generatedAccessToken instanceof ClaimAccessor) {
+-			authorizationBuilder.token(accessToken, (metadata) ->
+-					metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims()));
+-		} else {
+-			authorizationBuilder.accessToken(accessToken);
+-		}
+-				
+-		OAuth2Authorization authorization = authorizationBuilder.build();
+-		this.authorizationService.save(authorization);
+-		
+-		return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken);
+-	}
+-
+-	@Override
+-	public boolean supports(Class<?> authentication) {
+-		return CustomPasswordAuthenticationToken.class.isAssignableFrom(authentication);
+-	}
+-
+-	private static OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(Authentication authentication) {
+-		
+-		OAuth2ClientAuthenticationToken clientPrincipal = null;
+-		if (OAuth2ClientAuthenticationToken.class.isAssignableFrom(authentication.getPrincipal().getClass())) {
+-			clientPrincipal = (OAuth2ClientAuthenticationToken) authentication.getPrincipal();
+-		}
+-		if (clientPrincipal != null && clientPrincipal.isAuthenticated()) {
+-			return clientPrincipal;
+-		}
+-		throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_CLIENT);
+-	}	
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/RoleDTO.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/RoleDTO.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/RoleDTO.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/RoleDTO.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.dto;public class RoleDTO {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/RoleRepository.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/RoleRepository.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/RoleRepository.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/RoleRepository.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,7 +0,0 @@
+-package com.devsuperior.demo.repositories;
+-
+-import com.devsuperior.demo.entities.Role;
+-import org.springframework.data.jpa.repository.JpaRepository;
+-
+-public interface RoleRepository extends JpaRepository<Role, Long> {
+-}
+\ No newline at end of file
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomUserAuthorities.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomUserAuthorities.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomUserAuthorities.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomUserAuthorities.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,24 +0,0 @@
+-package com.devsuperior.demo.config.customgrant;
+-
+-import org.springframework.security.core.GrantedAuthority;
+-
+-import java.util.Collection;
+-
+-public class CustomUserAuthorities {
+-
+-	private String username;
+-	private Collection<? extends GrantedAuthority> authorities;
+-
+-	public CustomUserAuthorities(String username, Collection<? extends GrantedAuthority> authorities) {
+-		this.username = username;
+-		this.authorities = authorities;
+-	}
+-
+-	public String getUsername() {
+-		return username;
+-	}
+-
+-	public Collection<? extends GrantedAuthority> getAuthorities() {
+-		return authorities;
+-	}
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ValidationError.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ValidationError.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ValidationError.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ValidationError.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,18 +0,0 @@
+-package com.devsuperior.demo.controllers.exceptions;
+-
+-import java.util.ArrayList;
+-import java.util.List;
+-// Erro de validação
+-// tudo q tem no StandardError vai ter no ValidationError
+-public class ValidationError extends StandardError {
+-
+-    private List<FieldMessage> errors = new ArrayList<>();
+-
+-    public List<FieldMessage> getErrors() {
+-        return errors;
+-    }
+-
+-    public void addError(String fieldName, String message) {
+-        errors.add(new FieldMessage(fieldName, message));
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/CityRepository.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/CityRepository.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/CityRepository.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/CityRepository.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.repositories;public interface CityRepository {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/UserService.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/UserService.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/UserService.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/UserService.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,36 +0,0 @@
+-package com.devsuperior.demo.services;
+-
+-import com.devsuperior.demo.dto.CityDTO;
+-import com.devsuperior.demo.entities.City;
+-import com.devsuperior.demo.repositories.CityRepository;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.data.domain.Sort;
+-import org.springframework.stereotype.Service;
+-import org.springframework.transaction.annotation.Transactional;
+-
+-import java.util.List;
+-
+-@Service
+-public class CityService {
+-
+-    @Autowired
+-    private CityRepository repository;
+-
+-    @Transactional(readOnly = true)
+-    public List<CityDTO> findAll() {
+-        List<City> list = repository.findAll(Sort.by("name"));
+-        return list.stream().map(CityDTO::new).toList();
+-    }
+-
+-    @Transactional
+-    public CityDTO insert(CityDTO dto) {
+-        City entity = new City();
+-        copiaDtoToEntity(dto, entity);
+-        entity = repository.save(entity);
+-        return new CityDTO(entity);
+-    }
+-
+-    private void copiaDtoToEntity(CityDTO dto, City entity) {
+-        entity.setName(dto.getName());
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AuthorizationServerConfig.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AuthorizationServerConfig.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AuthorizationServerConfig.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AuthorizationServerConfig.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,196 +0,0 @@
+-package com.devsuperior.demo.config;
+-
+-
+-import com.devsuperior.demo.config.customgrant.CustomPasswordAuthenticationConverter;
+-import com.devsuperior.demo.config.customgrant.CustomPasswordAuthenticationProvider;
+-import com.devsuperior.demo.config.customgrant.CustomUserAuthorities;
+-import com.nimbusds.jose.jwk.JWKSet;
+-import com.nimbusds.jose.jwk.RSAKey;
+-import com.nimbusds.jose.jwk.source.JWKSource;
+-import com.nimbusds.jose.proc.SecurityContext;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.beans.factory.annotation.Value;
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.core.annotation.Order;
+-import org.springframework.security.config.Customizer;
+-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+-import org.springframework.security.core.userdetails.UserDetailsService;
+-import org.springframework.security.crypto.password.PasswordEncoder;
+-import org.springframework.security.oauth2.core.AuthorizationGrantType;
+-import org.springframework.security.oauth2.core.OAuth2Token;
+-import org.springframework.security.oauth2.jwt.JwtDecoder;
+-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+-import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationConsentService;
+-import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
+-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
+-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+-import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+-import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+-import org.springframework.security.oauth2.server.authorization.token.*;
+-import org.springframework.security.web.SecurityFilterChain;
+-
+-import java.security.KeyPair;
+-import java.security.KeyPairGenerator;
+-import java.security.interfaces.RSAPrivateKey;
+-import java.security.interfaces.RSAPublicKey;
+-import java.time.Duration;
+-import java.util.List;
+-import java.util.UUID;
+-
+-@Configuration
+-public class AuthorizationServerConfig {
+-
+-	// Servidor de Autorização
+-
+-	@Value("${security.client-id}")
+-	private String clientId;
+-
+-	@Value("${security.client-secret}")
+-	private String clientSecret;
+-
+-	@Value("${security.jwt.duration}")
+-	private Integer jwtDurationSeconds;
+-
+-	@Autowired
+-	private PasswordEncoder passwordEncoder;
+-
+-	@Autowired
+-	private UserDetailsService userDetailsService;
+-
+-	@Bean
+-	@Order(2)
+-	public SecurityFilterChain asSecurityFilterChain(HttpSecurity http) throws Exception {
+-
+-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+-
+-		// @formatter:off
+-		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+-			.tokenEndpoint(tokenEndpoint -> tokenEndpoint
+-				.accessTokenRequestConverter(new CustomPasswordAuthenticationConverter())
+-				.authenticationProvider(new CustomPasswordAuthenticationProvider(authorizationService(), tokenGenerator(), userDetailsService, passwordEncoder)));
+-
+-		http.oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
+-		// @formatter:on
+-
+-		return http.build();
+-	}
+-
+-	@Bean
+-	public OAuth2AuthorizationService authorizationService() {
+-		return new InMemoryOAuth2AuthorizationService();
+-	}
+-
+-	@Bean
+-	public OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService() {
+-		return new InMemoryOAuth2AuthorizationConsentService();
+-	}
+-
+-//  Está no AppConfig
+-//	@Bean
+-//	public PasswordEncoder passwordEncoder() {
+-//		return new BCryptPasswordEncoder();
+-//	}
+-
+-	@Bean
+-	public RegisteredClientRepository registeredClientRepository() {
+-		// @formatter:off
+-		RegisteredClient registeredClient = RegisteredClient
+-			.withId(UUID.randomUUID().toString())
+-			.clientId(clientId)
+-			.clientSecret(passwordEncoder.encode(clientSecret))
+-			.scope("read")
+-			.scope("write")
+-			.authorizationGrantType(new AuthorizationGrantType("password"))
+-			.tokenSettings(tokenSettings())
+-			.clientSettings(clientSettings())
+-			.build();
+-		// @formatter:on
+-
+-		return new InMemoryRegisteredClientRepository(registeredClient);
+-	}
+-
+-	@Bean
+-	public TokenSettings tokenSettings() {
+-		// @formatter:off
+-		return TokenSettings.builder()
+-			.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+-			.accessTokenTimeToLive(Duration.ofSeconds(jwtDurationSeconds))
+-			.build();
+-		// @formatter:on
+-	}
+-
+-	@Bean
+-	public ClientSettings clientSettings() {
+-		return ClientSettings.builder().build();
+-	}
+-
+-	@Bean
+-	public AuthorizationServerSettings authorizationServerSettings() {
+-		return AuthorizationServerSettings.builder().build();
+-	}
+-
+-	@Bean
+-	public OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator() {
+-		NimbusJwtEncoder jwtEncoder = new NimbusJwtEncoder(jwkSource());
+-		JwtGenerator jwtGenerator = new JwtGenerator(jwtEncoder);
+-		jwtGenerator.setJwtCustomizer(tokenCustomizer());
+-		OAuth2AccessTokenGenerator accessTokenGenerator = new OAuth2AccessTokenGenerator();
+-		return new DelegatingOAuth2TokenGenerator(jwtGenerator, accessTokenGenerator);
+-	}
+-
+-	@Bean
+-	public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
+-		return context -> {
+-			OAuth2ClientAuthenticationToken principal = context.getPrincipal();
+-			CustomUserAuthorities user = (CustomUserAuthorities) principal.getDetails();
+-			List<String> authorities = user.getAuthorities().stream().map(x -> x.getAuthority()).toList();
+-			if (context.getTokenType().getValue().equals("access_token")) {
+-				// @formatter:off
+-				context.getClaims()
+-					.claim("authorities", authorities)
+-					.claim("username", user.getUsername());
+-				// @formatter:on
+-			}
+-		};
+-	}
+-
+-	@Bean
+-	public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
+-		return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
+-	}
+-
+-	@Bean
+-	public JWKSource<SecurityContext> jwkSource() {
+-		RSAKey rsaKey = generateRsa();
+-		JWKSet jwkSet = new JWKSet(rsaKey);
+-		return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+-	}
+-
+-	private static RSAKey generateRsa() {
+-		KeyPair keyPair = generateRsaKey();
+-		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+-		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+-		return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
+-	}
+-
+-	private static KeyPair generateRsaKey() {
+-		KeyPair keyPair;
+-		try {
+-			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+-			keyPairGenerator.initialize(2048);
+-			keyPair = keyPairGenerator.generateKeyPair();
+-		} catch (Exception ex) {
+-			throw new IllegalStateException(ex);
+-		}
+-		return keyPair;
+-	}
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/UserDTO.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/UserDTO.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/UserDTO.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/dto/UserDTO.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.dto;public class UserDTO {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/Role.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/Role.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/Role.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/Role.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.entities;public class Role {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/User.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/User.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/User.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/entities/User.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.entities;public class User {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/ResourceServerConfig.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/ResourceServerConfig.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/ResourceServerConfig.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/ResourceServerConfig.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,88 +0,0 @@
+-package com.devsuperior.demo.config;
+-
+-import org.springframework.beans.factory.annotation.Value;
+-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.context.annotation.Profile;
+-import org.springframework.core.Ordered;
+-import org.springframework.core.annotation.Order;
+-import org.springframework.security.config.Customizer;
+-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+-import org.springframework.security.web.SecurityFilterChain;
+-import org.springframework.web.cors.CorsConfiguration;
+-import org.springframework.web.cors.CorsConfigurationSource;
+-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+-import org.springframework.web.filter.CorsFilter;
+-
+-import java.util.Arrays;
+-
+-@Configuration
+-@EnableWebSecurity
+-@EnableMethodSecurity
+-public class ResourceServerConfig {
+-
+-	@Value("${cors.origins}")
+-	private String corsOrigins;
+-
+-	@Bean
+-	@Profile("test")
+-	@Order(1)
+-	public SecurityFilterChain h2SecurityFilterChain(HttpSecurity http) throws Exception { // Libera o H2 Console no modo teste
+-
+-		http.securityMatcher(PathRequest.toH2Console()).csrf(csrf -> csrf.disable())
+-				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+-		return http.build();
+-	}
+-
+-	@Bean
+-	@Order(3)
+-	public SecurityFilterChain rsSecurityFilterChain(HttpSecurity http) throws Exception {
+-
+-		http.csrf(csrf -> csrf.disable());
+-		http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll()); // Configuração de controle de acesso aos recursos
+-		http.oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults())); // Configura o token
+-		http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+-		return http.build();
+-	}
+-
+-	@Bean
+-	public JwtAuthenticationConverter jwtAuthenticationConverter() {
+-		JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+-		grantedAuthoritiesConverter.setAuthoritiesClaimName("authorities");
+-		grantedAuthoritiesConverter.setAuthorityPrefix("");
+-
+-		JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+-		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+-		return jwtAuthenticationConverter;
+-	}
+-
+-	@Bean
+-	CorsConfigurationSource corsConfigurationSource() {
+-
+-		String[] origins = corsOrigins.split(",");
+-
+-		CorsConfiguration corsConfig = new CorsConfiguration();
+-		corsConfig.setAllowedOriginPatterns(Arrays.asList(origins));
+-		corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "PATCH"));
+-		corsConfig.setAllowCredentials(true);
+-		corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+-
+-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+-		source.registerCorsConfiguration("/**", corsConfig);
+-		return source;
+-	}
+-
+-	@Bean
+-	FilterRegistrationBean<CorsFilter> corsFilter() {
+-		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(
+-				new CorsFilter(corsConfigurationSource()));
+-		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+-		return bean;
+-	}
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/DatabaseException.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/DatabaseException.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/DatabaseException.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/exceptions/DatabaseException.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,8 +0,0 @@
+-package com.devsuperior.demo.services.exceptions;
+-
+-public class DatabaseException extends RuntimeException {
+-
+-    public DatabaseException(String msg) {
+-        super(msg);
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AppConfig.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AppConfig.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AppConfig.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/AppConfig.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,17 +0,0 @@
+-package com.devsuperior.demo.config;
+-
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+-import org.springframework.security.crypto.password.PasswordEncoder;
+-
+-@Configuration
+-public class AppConfig {
+-
+-    //Bean para criptografar
+-    // Bean é para método - componenete gerenciado pelo SpringBoot
+-    @Bean
+-    public PasswordEncoder passwordEncoder() {
+-        return new BCryptPasswordEncoder();
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/CityService.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/CityService.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/CityService.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/services/CityService.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.services;public class CityService {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/EventController.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/EventController.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/EventController.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/EventController.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,25 +0,0 @@
+-package com.devsuperior.demo.controllers;
+-
+-import com.devsuperior.demo.dto.CityDTO;
+-import com.devsuperior.demo.services.CityService;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.http.ResponseEntity;
+-import org.springframework.web.bind.annotation.GetMapping;
+-import org.springframework.web.bind.annotation.RequestMapping;
+-import org.springframework.web.bind.annotation.RestController;
+-
+-import java.util.List;
+-
+-@RestController
+-@RequestMapping(value = "/cities")
+-public class CityController {
+-
+-    @Autowired
+-    private CityService service;
+-
+-    @GetMapping
+-    public ResponseEntity<List<CityDTO>> findAll() {
+-        List<CityDTO> list = service.findAll();
+-        return ResponseEntity.ok().body(list);
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/StandardError.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/StandardError.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/StandardError.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/StandardError.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,55 +0,0 @@
+-package com.devsuperior.demo.controllers.exceptions;
+-
+-import java.time.Instant;
+-// Erro padrão Que esta no POSTMAN
+-public class StandardError {
+-
+-    private Instant timestamp;
+-    private Integer status;
+-    private String error;
+-    private String message;
+-    private String path;
+-
+-    public StandardError() {
+-    }
+-
+-    public Instant getTimestamp() {
+-        return timestamp;
+-    }
+-
+-    public void setTimestamp(Instant timestamp) {
+-        this.timestamp = timestamp;
+-    }
+-
+-    public Integer getStatus() {
+-        return status;
+-    }
+-
+-    public void setStatus(Integer status) {
+-        this.status = status;
+-    }
+-
+-    public String getError() {
+-        return error;
+-    }
+-
+-    public void setError(String error) {
+-        this.error = error;
+-    }
+-
+-    public String getMessage() {
+-        return message;
+-    }
+-
+-    public void setMessage(String message) {
+-        this.message = message;
+-    }
+-
+-    public String getPath() {
+-        return path;
+-    }
+-
+-    public void setPath(String path) {
+-        this.path = path;
+-    }
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/projections/UserDetailsProjection.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/projections/UserDetailsProjection.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/projections/UserDetailsProjection.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/projections/UserDetailsProjection.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.projections;public interface UserDetailsProjection {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/EventRepository.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/EventRepository.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/EventRepository.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/EventRepository.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,7 +0,0 @@
+-package com.devsuperior.demo.repositories;
+-
+-import com.devsuperior.demo.entities.City;
+-import org.springframework.data.jpa.repository.JpaRepository;
+-
+-public interface CityRepository extends JpaRepository<City, Long> {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/CityController.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/CityController.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/CityController.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/CityController.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,2 +0,0 @@
+-package com.devsuperior.demo.controllers;public class CityController {
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationConverter.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationConverter.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationConverter.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/config/customgrant/CustomPasswordAuthenticationConverter.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,83 +0,0 @@
+-package com.devsuperior.demo.config.customgrant;
+-
+-import jakarta.servlet.http.HttpServletRequest;
+-import org.springframework.lang.Nullable;
+-import org.springframework.security.core.Authentication;
+-import org.springframework.security.core.context.SecurityContextHolder;
+-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
+-import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+-import org.springframework.security.web.authentication.AuthenticationConverter;
+-import org.springframework.util.LinkedMultiValueMap;
+-import org.springframework.util.MultiValueMap;
+-import org.springframework.util.StringUtils;
+-
+-import java.util.*;
+-
+-public class CustomPasswordAuthenticationConverter implements AuthenticationConverter {
+-
+-	@Nullable
+-	@Override
+-	public Authentication convert(HttpServletRequest request) {
+-		
+-		String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+-				
+-		if (!"password".equals(grantType)) {
+-			return null;
+-		}
+-		
+-		MultiValueMap<String, String> parameters = getParameters(request);
+-		
+-		// scope (OPTIONAL)
+-		String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
+-		if (StringUtils.hasText(scope) &&
+-				parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
+-			throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);
+-		}
+-		
+-		// username (REQUIRED)
+-		String username = parameters.getFirst(OAuth2ParameterNames.USERNAME);
+-		if (!StringUtils.hasText(username) ||
+-				parameters.get(OAuth2ParameterNames.USERNAME).size() != 1) {
+-			throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);
+-		}
+-		
+-		// password (REQUIRED)
+-		String password = parameters.getFirst(OAuth2ParameterNames.PASSWORD);
+-		if (!StringUtils.hasText(password) ||
+-				parameters.get(OAuth2ParameterNames.PASSWORD).size() != 1) {
+-			throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);
+-		}
+-				
+-		Set<String> requestedScopes = null;
+-		if (StringUtils.hasText(scope)) {
+-			requestedScopes = new HashSet<>(
+-					Arrays.asList(StringUtils.delimitedListToStringArray(scope, " ")));
+-		}
+-		
+-		Map<String, Object> additionalParameters = new HashMap<>();
+-		parameters.forEach((key, value) -> {
+-			if (!key.equals(OAuth2ParameterNames.GRANT_TYPE) &&
+-					!key.equals(OAuth2ParameterNames.SCOPE)) {
+-				additionalParameters.put(key, value.get(0));
+-			}
+-		});
+-		
+-		Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();	
+-		return new CustomPasswordAuthenticationToken(clientPrincipal, requestedScopes, additionalParameters);
+-	}
+-
+-	private static MultiValueMap<String, String> getParameters(HttpServletRequest request) {
+-		
+-		Map<String, String[]> parameterMap = request.getParameterMap();
+-		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>(parameterMap.size());
+-		parameterMap.forEach((key, values) -> {
+-			if (values.length > 0) {
+-				for (String value : values) {
+-					parameters.add(key, value);
+-				}
+-			}
+-		});
+-		return parameters;
+-	}
+-}
+Index: ../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ControllerExceptionHandler.java
+===================================================================
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ControllerExceptionHandler.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ControllerExceptionHandler.java
+deleted file mode 100644
+--- a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/controllers/exceptions/ControllerExceptionHandler.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ /dev/null	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
+@@ -1,62 +0,0 @@
+-package com.devsuperior.demo.controllers.exceptions;
+-
+-import com.devsuperior.demo.services.exceptions.DatabaseException;
+-import com.devsuperior.demo.services.exceptions.ResourceNotFoundException;
+-import jakarta.servlet.http.HttpServletRequest;
+-import org.springframework.http.HttpStatus;
+-import org.springframework.http.ResponseEntity;
+-import org.springframework.validation.FieldError;
+-import org.springframework.web.bind.MethodArgumentNotValidException;
+-import org.springframework.web.bind.annotation.ControllerAdvice;
+-import org.springframework.web.bind.annotation.ExceptionHandler;
+-
+-import java.time.Instant;
+-
+-@ControllerAdvice// Essa anotetion vai permite que intecepte algumas exceções da camada controller
+-// Manipulador de Exceção de Recurso
+-public class ControllerExceptionHandler {
+-
+-    @ExceptionHandler(ResourceNotFoundException.class)
+-    public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
+-        HttpStatus status = HttpStatus.NOT_FOUND;
+-        StandardError err = new StandardError();
+-        err.setTimestamp(Instant.now());
+-        err.setStatus(status.value());
+-        err.setError("Resource not found");
+-        err.setMessage(e.getMessage());
+-        err.setPath(request.getRequestURI());
+-
+-        return ResponseEntity.status(status).body(err);
+-    }
+-
+-    @ExceptionHandler(DatabaseException.class)
+-    public ResponseEntity<StandardError> databaseException(DatabaseException e, HttpServletRequest request) {
+-        HttpStatus status = HttpStatus.BAD_REQUEST;
+-        StandardError err = new StandardError();
+-        err.setTimestamp(Instant.now());
+-        err.setStatus(status.value());
+-        err.setError("Database Exception");
+-        err.setMessage(e.getMessage());
+-        err.setPath(request.getRequestURI());
+-
+-        return ResponseEntity.status(status).body(err);
+-    }
+-
+-    // tratando minhas exceção de validação
+-    @ExceptionHandler(MethodArgumentNotValidException.class)
+-    public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
+-        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+-        ValidationError err = new ValidationError();
+-        err.setTimestamp(Instant.now());
+-        err.setStatus(status.value());
+-        err.setError("Validation Exception");
+-        err.setMessage(e.getMessage());
+-        err.setPath(request.getRequestURI());
+-
+-        for (FieldError f : e.getBindingResult().getFieldErrors()){
+-            err.addError(f.getField(), f.getDefaultMessage() );
+-        }
+-
+-        return ResponseEntity.status(status).body(err);
+-    }
+-}
+\ No newline at end of file
+Index: ../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/CategoryServiceTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.dscommerce.services;public class CategoryServiceTests {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/CategoryServiceTests.java b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/CategoryServiceTests.java
+--- a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/CategoryServiceTests.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/CategoryServiceTests.java	(date 1720731151762)
+@@ -1,2 +1,55 @@
+-package com.devsuperior.dscommerce.services;public class CategoryServiceTests {
++package com.devsuperior.dscommerce.services;
++
++import com.devsuperior.dscommerce.dto.CategoryDTO;
++import com.devsuperior.dscommerce.entities.Category;
++import com.devsuperior.dscommerce.repositories.CategoryRepository;
++import com.devsuperior.dscommerce.tests.CategoryFactory;
++import org.junit.jupiter.api.Assertions;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.extension.ExtendWith;
++import org.mockito.InjectMocks;
++import org.mockito.Mock;
++import org.mockito.Mockito;
++import org.springframework.test.context.junit.jupiter.SpringExtension;
++
++import java.util.ArrayList;
++import java.util.List;
++
++
++@ExtendWith(SpringExtension.class)
++public class CategoryServiceTests {
++
++    @InjectMocks
++    private CategoryService service;
++
++    @Mock
++    private CategoryRepository repository;
++
++    private Category category;
++    private List<Category> list;
++
++    @BeforeEach
++    void setUp() throws Exception {
++        category = CategoryFactory.createCategory();
++
++        list = new ArrayList<>();
++        list.add(category);
++
++        // simulando o comportamento
++        Mockito.when(repository.findAll()).thenReturn(list);
++
++    }
++
++    // findAAL retorna a list de CategoryDTO
++    @Test
++    public void findALLShouldReturnListCategoryDTO() {
++
++        List<CategoryDTO> result = service.findAll();
++
++        // a lista começa com zero
++        Assertions.assertEquals(result.size(), 1);
++        Assertions.assertEquals(result.get(0).getId(), category.getId());
++        Assertions.assertEquals(result.get(0).getName(), category.getName());
++    }
+ }
+Index: ../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/CategoryFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.dscommerce.tests;public class CategoryFactory {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/CategoryFactory.java b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/CategoryFactory.java
+--- a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/CategoryFactory.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/CategoryFactory.java	(date 1720730085776)
+@@ -1,2 +1,14 @@
+-package com.devsuperior.dscommerce.tests;public class CategoryFactory {
++package com.devsuperior.dscommerce.tests;
++
++import com.devsuperior.dscommerce.entities.Category;
++
++public class CategoryFactory {
++
++    public static Category createCategory() {
++        return new Category(1L, "Games");
++    }
++
++    public static Category createCategory(Long id, String name) {
++        return new Category(id, name);
++    }
+ }
+Index: .idea/dscommerce-restaassured.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dscommerce-restaassured.iml b/.idea/dscommerce-restaassured.iml
+new file mode 100644
+--- /dev/null	(date 1721999810150)
++++ b/.idea/dscommerce-restaassured.iml	(date 1721999810150)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module version="4">
++  <component name="AdditionalModuleElements">
++    <content url="file://$MODULE_DIR$" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1721999810340)
++++ b/.idea/compiler.xml	(date 1721999810340)
+@@ -0,0 +1,18 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile name="Maven default annotation processors profile" enabled="true">
++        <sourceOutputDir name="target/generated-sources/annotations" />
++        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
++        <outputRelativeToContentRoot value="true" />
++        <module name="dscommerce-restaassured" />
++      </profile>
++    </annotationProcessing>
++  </component>
++  <component name="JavacSettings">
++    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
++      <module name="dscommerce-restaassured" options="-parameters" />
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1721999810277)
++++ b/.idea/modules.xml	(date 1721999810277)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/dscommerce-restaassured.iml" filepath="$PROJECT_DIR$/.idea/dscommerce-restaassured.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: ../poc-example-mock-spy-main/src/test/java/com/devsuperior/examplemockspy/services/ProductServiceTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.examplemockspy;public class ProductServiceTests {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../poc-example-mock-spy-main/src/test/java/com/devsuperior/examplemockspy/services/ProductServiceTests.java b/../poc-example-mock-spy-main/src/test/java/com/devsuperior/examplemockspy/services/ProductServiceTests.java
+--- a/../poc-example-mock-spy-main/src/test/java/com/devsuperior/examplemockspy/services/ProductServiceTests.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../poc-example-mock-spy-main/src/test/java/com/devsuperior/examplemockspy/services/ProductServiceTests.java	(date 1720562549013)
+@@ -1,2 +1,179 @@
+-package com.devsuperior.examplemockspy;public class ProductServiceTests {
+-}
++package com.devsuperior.examplemockspy.services;
++
++import static org.mockito.ArgumentMatchers.any;
++
++import org.junit.jupiter.api.Assertions;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.extension.ExtendWith;
++import org.mockito.InjectMocks;
++import org.mockito.Mock;
++import org.mockito.Mockito;
++import org.springframework.test.context.junit.jupiter.SpringExtension;
++
++import com.devsuperior.examplemockspy.dto.ProductDTO;
++import com.devsuperior.examplemockspy.entities.Product;
++import com.devsuperior.examplemockspy.repositories.ProductRepository;
++import com.devsuperior.examplemockspy.services.exceptions.InvalidDataException;
++import com.devsuperior.examplemockspy.services.exceptions.ResourceNotFoundException;
++
++import jakarta.persistence.EntityNotFoundException;
++
++@ExtendWith(SpringExtension.class)
++public class ProductServiceTests {
++
++    @InjectMocks // injetando a dependencia testatada
++    private ProductService service;
++
++    @Mock // implementa o comportamento de algum componete do sistema
++    private ProductRepository repository;
++
++    private long existingProductId, nonExistingProductId;
++    private Product product;
++    private ProductDTO productDTO;
++
++    @BeforeEach // Preparecão antes de cada teste
++    void setUp() throws Exception {
++        // simulando comportamento de repository, save e getReferenceById
++        existingProductId = 1L;
++        nonExistingProductId = 2L;
++
++        product = new Product(1L, "Playstation", 10.0);
++        productDTO = new ProductDTO(product);
++
++        Mockito.when(repository.save(any())).thenReturn(product);
++
++        Mockito.when(repository.getReferenceById(existingProductId)).thenReturn(product);
++        Mockito.when(repository.getReferenceById(nonExistingProductId)).thenThrow(EntityNotFoundException.class);
++    }
++
++    // insert deve retornar ProductDTO quando dados válidos
++    @Test
++    public void insertShouldReturnProductDTOWhenValidData() {
++        ProductService serviceSpy = Mockito.spy(service);
++        // doNothing = fazer nada
++        Mockito.doNothing().when(serviceSpy).validateData(productDTO);
++
++        ProductDTO result = serviceSpy.insert(productDTO);
++
++        Assertions.assertNotNull(result);
++        Assertions.assertEquals(result.getName(), "Playstation");
++    }
++
++    // insert deve retornar exceção de dados inválidos quando o nome do produto estiver em branco
++    @Test
++    public void insertShouldReturnInvalidDataExceptionWhenProductNameIsBlank() {
++        // já estou a colocar o nome dele como vázio
++        productDTO.setName("");
++
++        ProductService serviceSpy = Mockito.spy(service);
++        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateData(productDTO);
++
++        Assertions.assertThrows(InvalidDataException.class, () -> {
++            @SuppressWarnings("unused")
++            ProductDTO result = serviceSpy.insert(productDTO);
++        });
++    }
++
++    // insert deve retornar exceção de dados inválidos quando o preço do produto for negativo
++    @Test
++    public void insertShouldReturnInvalidDataExceptionWhenProductPriceIsNegative() {
++        // ja estou a colocar preco negativo
++        productDTO.setPrice(-5.0);
++
++        ProductService serviceSpy = Mockito.spy(service);
++        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateData(productDTO);
++
++        Assertions.assertThrows(InvalidDataException.class, () -> {
++            @SuppressWarnings("unused")
++            ProductDTO result = serviceSpy.insert(productDTO);
++        });
++    }
++
++    // atualização deve retornar o DTO do produto quando o ID existir e dados válidos
++    @Test
++    public void updateShouldReturnProductDTOWhenIdExistsAndValidData() {
++
++        ProductService serviceSpy = Mockito.spy(service);
++        Mockito.doNothing().when(serviceSpy).validateData(productDTO);
++
++        ProductDTO result = serviceSpy.update(existingProductId, productDTO);
++
++        Assertions.assertNotNull(result);
++        Assertions.assertEquals(result.getId(), existingProductId);
++    }
++
++    // atualização deve retornar exceção de dados inválidos quando o ID existir e o nome do produto estiver em branco
++    @Test
++    public void updateShouldReturnInvalidDataExceptionWhenIdExistsAndProductNameIsBlank() {
++        // ja estou colocando o nome em branco
++        productDTO.setName("");
++
++        ProductService serviceSpy = Mockito.spy(service);
++        // lançando a exceção
++        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateData(productDTO);
++
++        Assertions.assertThrows(InvalidDataException.class, () -> {
++            @SuppressWarnings("unused")
++            ProductDTO result = serviceSpy.update(existingProductId, productDTO);
++        });
++    }
++
++    // atualização deve retornar exceção de dados inválidos quando o ID existe e o preço é negativo
++    @Test
++    public void updateShouldReturnInvalidDataExceptionWhenIdExistsAndPriceIsNegative() {
++        // ja estou colocando o preço negaivo
++        productDTO.setPrice(-5.0);
++
++        ProductService serviceSpy = Mockito.spy(service);
++        // lançando a exceção
++        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateData(productDTO);
++
++        Assertions.assertThrows(InvalidDataException.class, () -> {
++            @SuppressWarnings("unused")
++            ProductDTO result = serviceSpy.update(existingProductId, productDTO);
++        });
++    }
++
++    // atualização deve retornar exceção de recurso não encontrado quando o ID não existe e dados válidos
++    @Test
++    public void updateShouldReturnResourceNotFoundExceptionWhenIdDoesNotExistAndValidData() {
++
++        ProductService serviceSpy = Mockito.spy(service);
++        Mockito.doNothing().when(serviceSpy).validateData(productDTO);
++
++        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
++            ProductDTO result = serviceSpy.update(nonExistingProductId, productDTO);
++        });
++    }
++
++    // atualização deve retornar exceção de dados inválidos quando o ID não existe e o nome está em branco
++    @Test
++    public void updateShouldReturnInvalidDataExceptionWhenIdDoesNotExistAndNameIsBlank() {
++
++        productDTO.setName("");
++
++        ProductService serviceSpy = Mockito.spy(service);
++        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateData(productDTO);
++
++
++        Assertions.assertThrows(InvalidDataException.class, () -> {
++            ProductDTO result = serviceSpy.update(nonExistingProductId, productDTO);
++        });
++    }
++
++    // atualização deve retornar exceção de dados inválidos quando o ID não existe e o preço é negativo
++    @Test
++    public void updateShouldReturnInvalidDataExceptionWhenIdDoesNotExistAndPriceIsNegative() {
++
++        productDTO.setPrice(-5.0);
++
++        ProductService serviceSpy = Mockito.spy(service);
++        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateData(productDTO);
++
++
++        Assertions.assertThrows(InvalidDataException.class, () -> {
++            ProductDTO result = serviceSpy.update(nonExistingProductId, productDTO);
++        });
++    }
++}
+\ No newline at end of file
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/ReviewRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.repositories;\r\n\r\nimport com.devsuperior.movieflix.entities.Genre;\r\nimport com.devsuperior.movieflix.entities.User;\r\nimport com.devsuperior.movieflix.projections.UserDetailsProjection;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.data.jpa.repository.Query;\r\n\r\nimport java.util.List;\r\n\r\npublic interface GenreRepository extends JpaRepository<Genre, Long> {\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/ReviewRepository.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/ReviewRepository.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/ReviewRepository.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/ReviewRepository.java	(date 1719947658487)
+@@ -1,13 +1,17 @@
+ package com.devsuperior.movieflix.repositories;
+ 
+ import com.devsuperior.movieflix.entities.Genre;
+-import com.devsuperior.movieflix.entities.User;
+-import com.devsuperior.movieflix.projections.UserDetailsProjection;
++import com.devsuperior.movieflix.entities.Movie;
++import com.devsuperior.movieflix.entities.Review;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.data.jpa.repository.Query;
+ 
+ import java.util.List;
+ 
+-public interface GenreRepository extends JpaRepository<Genre, Long> {
++public interface ReviewRepository extends JpaRepository<Review, Long> {
+ 
++    @Query("SELECT obj "
++            + "FROM Review obj "
++            + "WHERE :movie IS NULL OR obj.movie = :movie")
++    List<Review> findByMovie(Movie movie);
+ }
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/ReviewService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.services;public class ReviewService {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/ReviewService.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/ReviewService.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/ReviewService.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/ReviewService.java	(date 1719947631739)
+@@ -1,2 +1,56 @@
+-package com.devsuperior.movieflix.services;public class ReviewService {
++package com.devsuperior.movieflix.services;
++
++import com.devsuperior.movieflix.dto.ReviewDTO;
++import com.devsuperior.movieflix.entities.Movie;
++import com.devsuperior.movieflix.entities.Review;
++import com.devsuperior.movieflix.entities.User;
++import com.devsuperior.movieflix.repositories.MovieRepository;
++
++import com.devsuperior.movieflix.repositories.ReviewRepository;
++import com.devsuperior.movieflix.services.exceptions.ResourceNotFoundException;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++import org.springframework.transaction.annotation.Transactional;
++
++import java.util.List;
++import java.util.stream.Collectors;
++
++@Service
++public class ReviewService {
++
++    @Autowired
++    private ReviewRepository reviewRepository;
++
++    @Autowired
++    private AuthService authService;
++
++    @Autowired
++    private MovieRepository movieRepository;
++
++    @Transactional(readOnly = true)
++    public List<ReviewDTO> findByMovie(Long movieId) {
++
++        if (!movieRepository.existsById(movieId)) {
++            throw new ResourceNotFoundException("Entity not found");
++        }
++
++        Movie movie = movieRepository.getReferenceById(movieId);
++        List<Review> reviewList = reviewRepository.findByMovie(movie);
++        return reviewList.stream().map(ReviewDTO::new).collect(Collectors.toList());
++    }
++
++    @Transactional
++    public ReviewDTO insert(ReviewDTO dto) {
++
++        User user = authService.authenticated();
++
++        Review entity = new Review();
++        entity.setMovie(movieRepository.getReferenceById(dto.getMovieId()));
++        entity.setUser(user);
++        entity.setText(dto.getText());
++
++        reviewRepository.save(entity);
++
++        return new ReviewDTO(entity);
++    }
+ }
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1721999811379)
++++ b/.idea/.gitignore	(date 1721999811379)
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+new file mode 100644
+--- /dev/null	(date 1721999810473)
++++ b/.idea/jarRepositories.xml	(date 1721999810473)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="https://repo.maven.apache.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: ../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/ProductFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.dscommerce.tests;public class ProductFactory {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/ProductFactory.java b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/ProductFactory.java
+--- a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/ProductFactory.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/ProductFactory.java	(date 1720736082783)
+@@ -1,2 +1,20 @@
+-package com.devsuperior.dscommerce.tests;public class ProductFactory {
++package com.devsuperior.dscommerce.tests;
++
++import com.devsuperior.dscommerce.entities.Category;
++import com.devsuperior.dscommerce.entities.Product;
++
++public class ProductFactory {
++
++    public static Product createProduct() {
++        Category category = CategoryFactory.createCategory();
++        Product product = new Product(1L, "Console PlayStation 5", "consectetur adipiscing elit", 3999.0, "https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg");
++        product.getCategories().add(category);
++        return product;
++    }
++
++    public static Product createProduct(String name) {
++        Product product = createProduct();
++        product.setName(name);
++        return product;
++    }
+ }
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/ReviewController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.controllers;public class ReviewController {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/ReviewController.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/ReviewController.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/ReviewController.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/ReviewController.java	(date 1719947530720)
+@@ -1,2 +1,34 @@
+-package com.devsuperior.movieflix.controllers;public class ReviewController {
+-}
++package com.devsuperior.movieflix.controllers;
++
++import com.devsuperior.movieflix.dto.ReviewDTO;
++import com.devsuperior.movieflix.services.ReviewService;
++import jakarta.validation.Valid;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.security.access.prepost.PreAuthorize;
++import org.springframework.web.bind.annotation.PostMapping;
++import org.springframework.web.bind.annotation.RequestBody;
++import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RestController;
++import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
++
++import java.net.URI;
++
++@RestController
++@RequestMapping("/reviews")
++public class ReviewController {
++
++    @Autowired
++    private ReviewService service;
++
++    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
++    @PostMapping
++    public ResponseEntity<ReviewDTO> insert(@Valid @RequestBody ReviewDTO dto){
++
++        dto = service.insert(dto);
++        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
++                .path("/{id}")
++                .buildAndExpand(dto.getId()).toUri();
++        return ResponseEntity.created(uri).body(dto);
++    }
++}
+\ No newline at end of file
+Index: ../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/ProductServiceTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.dscommerce.services;public class ProductServiceTests {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/ProductServiceTests.java b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/ProductServiceTests.java
+--- a/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/ProductServiceTests.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/services/ProductServiceTests.java	(date 1720816854752)
+@@ -1,2 +1,169 @@
+-package com.devsuperior.dscommerce.services;public class ProductServiceTests {
++package com.devsuperior.dscommerce.services;
++
++import com.devsuperior.dscommerce.dto.ProductDTO;
++import com.devsuperior.dscommerce.dto.ProductMinDTO;
++import com.devsuperior.dscommerce.entities.Product;
++import com.devsuperior.dscommerce.repositories.ProductRepository;
++import com.devsuperior.dscommerce.services.exceptions.DatabaseException;
++import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
++import com.devsuperior.dscommerce.tests.ProductFactory;
++import jakarta.persistence.EntityNotFoundException;
++import org.junit.jupiter.api.Assertions;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.extension.ExtendWith;
++import org.mockito.InjectMocks;
++import org.mockito.Mock;
++import org.mockito.Mockito;
++import org.springframework.dao.DataIntegrityViolationException;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.PageImpl;
++import org.springframework.data.domain.PageRequest;
++import org.springframework.data.domain.Pageable;
++import org.springframework.test.context.junit.jupiter.SpringExtension;
++
++import java.util.List;
++import java.util.Optional;
++
++import static org.mockito.ArgumentMatchers.any;
++
++@ExtendWith(SpringExtension.class)
++public class ProductServiceTests {
++
++    @InjectMocks
++    private ProductService service;
++
++    @Mock
++    private ProductRepository repository;
++
++    private long existingProductId, nonExistingProductId, dependenProductId;
++    private Product product;
++    private String productName;
++    private PageImpl<Product> page;
++    private ProductDTO productDTO;
++
++
++    @BeforeEach
++    void setUp() throws Exception {
++        existingProductId = 1L;
++        nonExistingProductId = 2L;
++        dependenProductId = 3L;
++
++        productName = "PlayStation 5";
++
++        product = ProductFactory.createProduct(productName);
++        page = new PageImpl<>(List.of(product));
++        productDTO = new ProductDTO(product);
++
++        Mockito.when(repository.findById(existingProductId)).thenReturn(Optional.of(product));
++        Mockito.when(repository.findById(nonExistingProductId)).thenReturn(Optional.empty());
++
++        Mockito.when(repository.searchByName(any(), (Pageable) any())).thenReturn(page);
++
++        Mockito.when(repository.save(any())).thenReturn(product);
++
++        Mockito.when(repository.getReferenceById(existingProductId)).thenReturn(product);
++        Mockito.when(repository.getReferenceById(nonExistingProductId)).thenThrow(EntityNotFoundException.class);
++
++        Mockito.when(repository.existsById(existingProductId)).thenReturn(true);
++        Mockito.when(repository.existsById(dependenProductId)).thenReturn(true);
++        Mockito.when(repository.existsById(nonExistingProductId)).thenReturn(false);
++
++        Mockito.doNothing().when(repository).deleteById(existingProductId);
++        Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependenProductId);
++
++    }
++
++    // findById deve retornar ProductDTO quando o ID existir
++    @Test
++    public void findByIdShouldReturnProductDTOWhenIdExists() {
++
++        ProductDTO result = service.findById(existingProductId);
++
++        Assertions.assertNotNull(result);
++        Assertions.assertEquals(result.getId(), existingProductId);
++        Assertions.assertEquals(result.getName(), product.getName());
++
++    }
++
++    // findById que retorna lançe exceção ResouceNotFound quando id não existir
++    @Test
++    public void findByIdShouldReturnResouceNotFoundExceptionWhenIdDoesNotExists() {
++
++        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
++            service.findById(nonExistingProductId);
++        });
++    }
++
++    // findAll deve retorna page de ProductMinDTO
++    @Test
++    public void findAllShouldReturnPagedProductMinDTO() {
++
++        Pageable pageable = PageRequest.of(0, 12);
++//        String name = "PlayStation 5";
++
++        Page<ProductMinDTO> result = service.findAll(productName, pageable);
++
++        Assertions.assertNotNull(result);
++        Assertions.assertEquals(result.getSize(), 1);
++        Assertions.assertEquals(result.iterator().next().getName(), productName);
++    }
++
++    // inserir deve retornar ProductDTO
++    @Test
++    public void insertShouldReturnProductDTO() {
++
++        ProductDTO result = service.insert(productDTO);
++
++        Assertions.assertNotNull(result);
++        Assertions.assertEquals(result.getId(), product.getId());
++    }
++
++    // atualização deve retornar ProductDTO quando o ID existir
++    @Test
++    public void updateShouldReturnProductDTOWhenIdExists() {
++
++        ProductDTO result = service.update(existingProductId, productDTO);
++
++        Assertions.assertNotNull(result);
++        Assertions.assertEquals(result.getId(), existingProductId);
++        Assertions.assertEquals(result.getName(), productDTO.getName());
++    }
++
++    // Atualização deve retorna exceção ResourceNotFoundException para id inexistente
++    @Test
++    public void updateShouldReturnResourceNotFoundExceptionWhenIdDoesNotExist() {
++
++        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
++            service.update(nonExistingProductId, productDTO);
++        });
++    }
++
++    // delete não deve fazer nada quando o ID existir
++    @Test
++    public void deleteShouldDoNothingWhenIdExists() {
++
++        Assertions.assertDoesNotThrow(() -> {
++            service.delete(existingProductId);
++        });
++    }
++
++    // delete deve lançar ResourceNotFoundException quando o ID não existir
++    @Test
++    public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
++
++        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
++            service.delete(nonExistingProductId);
++        });
++    }
++
++
++    // delete deve lançar DatabaseException quando o ID for dependente
++    @Test
++    public void deleteShouldThrowDatabaseExceptionWhenIdForDependente() {
++
++        Assertions.assertThrows(DatabaseException.class, () -> {
++            service.delete(dependenProductId);
++        });
++    }
+ }
+Index: .idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/encodings.xml b/.idea/encodings.xml
+new file mode 100644
+--- /dev/null	(date 1721999810384)
++++ b/.idea/encodings.xml	(date 1721999810384)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Encoding">
++    <file url="file://$PROJECT_DIR$/dscommerce-restaassured/src/main/java" charset="UTF-8" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1721999810363)
++++ b/.idea/misc.xml	(date 1721999810363)
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="MavenProjectsManager">
++    <option name="originalFiles">
++      <list>
++        <option value="$PROJECT_DIR$/dscommerce-restaassured/pom.xml" />
++      </list>
++    </option>
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="zulu-17" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/git_toolbox_blame.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/git_toolbox_blame.xml b/.idea/git_toolbox_blame.xml
+new file mode 100644
+--- /dev/null	(date 1721999810429)
++++ b/.idea/git_toolbox_blame.xml	(date 1721999810429)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="GitToolBoxBlameSettings">
++    <option name="version" value="2" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1721999810420)
++++ b/.idea/vcs.xml	(date 1721999810420)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/GenreController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.controllers;\r\n\r\npublic class genroController {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/GenreController.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/GenreController.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/GenreController.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/GenreController.java	(date 1719947765494)
+@@ -1,4 +1,30 @@
+ package com.devsuperior.movieflix.controllers;
+ 
+-public class genroController {
+-}
++import com.devsuperior.movieflix.dto.GenreDTO;
++import com.devsuperior.movieflix.services.GenreService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.security.access.prepost.PreAuthorize;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RestController;
++
++import java.util.List;
++
++@RestController
++@RequestMapping("/genres")
++public class GenreController {
++
++    @Autowired
++    private GenreService service;
++
++    //sem paginação
++    @PreAuthorize("hasAnyRole('VISITOR', 'MEMBER')")
++    @GetMapping
++    public ResponseEntity<List<GenreDTO>> findAll(){
++        List<GenreDTO> dto = service.findAll();
++        return ResponseEntity.ok().body(dto);
++    }
++
++
++}
+\ No newline at end of file
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/GenreService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.services;public class GenreService {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/GenreService.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/GenreService.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/GenreService.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/GenreService.java	(date 1719947744084)
+@@ -1,2 +1,24 @@
+-package com.devsuperior.movieflix.services;public class GenreService {
+-}
++package com.devsuperior.movieflix.services;
++
++import com.devsuperior.movieflix.dto.GenreDTO;
++import com.devsuperior.movieflix.entities.Genre;
++import com.devsuperior.movieflix.repositories.GenreRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++import org.springframework.transaction.annotation.Transactional;
++
++import java.util.List;
++import java.util.stream.Collectors;
++
++@Service
++public class GenreService {
++
++    @Autowired
++    private GenreRepository repository;
++
++    @Transactional(readOnly = true)
++    public List<GenreDTO> findAll(){
++        List<Genre> list = repository.findAll();
++        return list.stream().map(GenreDTO::new).collect(Collectors.toList());
++    }
++}
+\ No newline at end of file
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/GenreRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.repositories;\r\n\r\nimport java.util.List;\r\n\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.data.jpa.repository.Query;\r\n\r\nimport com.devsuperior.movieflix.entities.User;\r\nimport com.devsuperior.movieflix.projections.UserDetailsProjection;\r\n\r\npublic interface UserRepository extends JpaRepository<User, Long> {\r\n\r\n\tUser findByEmail(String email);\r\n\t\r\n\t@Query(nativeQuery = true, value = \"\"\"\r\n\t\t\tSELECT tb_user.email AS username, tb_user.password, tb_role.id AS roleId, tb_role.authority\r\n\t\t\tFROM tb_user\r\n\t\t\tINNER JOIN tb_user_role ON tb_user.id = tb_user_role.user_id\r\n\t\t\tINNER JOIN tb_role ON tb_role.id = tb_user_role.role_id\r\n\t\t\tWHERE tb_user.email = :email\r\n\t\t\"\"\")\r\n\tList<UserDetailsProjection> searchUserAndRolesByEmail(String email);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/GenreRepository.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/GenreRepository.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/GenreRepository.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/GenreRepository.java	(date 1718829791766)
+@@ -1,23 +1,13 @@
+ package com.devsuperior.movieflix.repositories;
+ 
+-import java.util.List;
+-
+-import org.springframework.data.jpa.repository.JpaRepository;
+-import org.springframework.data.jpa.repository.Query;
+-
++import com.devsuperior.movieflix.entities.Genre;
+ import com.devsuperior.movieflix.entities.User;
+ import com.devsuperior.movieflix.projections.UserDetailsProjection;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.data.jpa.repository.Query;
+ 
+-public interface UserRepository extends JpaRepository<User, Long> {
++import java.util.List;
+ 
+-	User findByEmail(String email);
+-	
+-	@Query(nativeQuery = true, value = """
+-			SELECT tb_user.email AS username, tb_user.password, tb_role.id AS roleId, tb_role.authority
+-			FROM tb_user
+-			INNER JOIN tb_user_role ON tb_user.id = tb_user_role.user_id
+-			INNER JOIN tb_role ON tb_role.id = tb_user_role.role_id
+-			WHERE tb_user.email = :email
+-		""")
+-	List<UserDetailsProjection> searchUserAndRolesByEmail(String email);
++public interface GenreRepository extends JpaRepository<Genre, Long> {
++
+ }
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/MovieController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.controllers;public class MovieController {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/MovieController.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/MovieController.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/MovieController.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/controllers/MovieController.java	(date 1719946600377)
+@@ -1,2 +1,35 @@
+-package com.devsuperior.movieflix.controllers;public class MovieController {
++package com.devsuperior.movieflix.controllers;
++
++import com.devsuperior.movieflix.dto.MovieCardDTO;
++import com.devsuperior.movieflix.dto.MovieDetailsDTO;
++import com.devsuperior.movieflix.services.MovieService;
++import jakarta.validation.Valid;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.Pageable;
++import org.springframework.http.ResponseEntity;
++import org.springframework.security.access.prepost.PreAuthorize;
++import org.springframework.web.bind.annotation.*;
++
++@RestController
++@RequestMapping("/movies")
++public class MovieController {
++
++    @Autowired
++    private MovieService service;
++
++    @PreAuthorize("hasAnyRole('ROLE_VISITOR', 'ROLE_MEMBER')")
++    @GetMapping("/{id}")
++    public ResponseEntity<MovieDetailsDTO> findById(@Valid @PathVariable Long id){
++        MovieDetailsDTO dto = service.findBiId(id);
++        return ResponseEntity.ok(dto);
++    }
++    @PreAuthorize("hasAnyRole('ROLE_VISITOR', 'ROLE_MEMBER')")
++    @GetMapping
++    public ResponseEntity<Page<MovieCardDTO>> findAll(
++            @RequestParam(value = "genreId", defaultValue = "0") Long genreId,
++            Pageable pageable) {
++        Page<MovieCardDTO> page = service.findByGenrePaged(genreId, pageable);
++        return ResponseEntity.ok().body(page);
++    }
+ }
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/MovieService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.services;public class MovieService {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/MovieService.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/MovieService.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/MovieService.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/services/MovieService.java	(date 1718835835420)
+@@ -1,2 +1,43 @@
+-package com.devsuperior.movieflix.services;public class MovieService {
+-}
++package com.devsuperior.movieflix.services;
++
++import com.devsuperior.movieflix.dto.MovieCardDTO;
++import com.devsuperior.movieflix.dto.MovieDetailsDTO;
++import com.devsuperior.movieflix.entities.Genre;
++import com.devsuperior.movieflix.entities.Movie;
++import com.devsuperior.movieflix.repositories.GenreRepository;
++import com.devsuperior.movieflix.repositories.MovieRepository;
++import com.devsuperior.movieflix.services.exceptions.ResourceNotFoundException;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.Pageable;
++import org.springframework.stereotype.Service;
++import org.springframework.transaction.annotation.Transactional;
++
++import java.util.List;
++
++@Service
++public class MovieService {
++
++    @Autowired
++    private MovieRepository repository;
++
++    @Autowired
++    private GenreRepository genreRepository;
++
++    // Com paginação
++    @Transactional(readOnly = true)
++    public Page<MovieCardDTO> findByGenrePaged(Long genreId, Pageable pageable) {
++        Genre genre = (genreId == 0) ? null : genreRepository.getReferenceById(genreId);
++        Page<Movie> page = repository.search(genre, pageable);
++        return page.map(x -> new MovieCardDTO(x));
++    }
++
++    @Transactional(readOnly = true)
++    public MovieDetailsDTO findBiId(Long id) {
++        if(! repository.existsById(id)){
++            throw new ResourceNotFoundException("Entity not found");
++        }
++        Movie movie = repository.getReferenceById(id);
++        return new MovieDetailsDTO(movie);
++    }
++}
+\ No newline at end of file
+Index: ../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/MovieRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.devsuperior.movieflix.repositories;public class MovieRepository {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/MovieRepository.java b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/MovieRepository.java
+--- a/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/MovieRepository.java	(revision 685958bdca6c2c5864d137b68e11a372e89ce45d)
++++ b/../Desafio Movieflix Casos de Uso/src/main/java/com/devsuperior/movieflix/repositories/MovieRepository.java	(date 1718835263213)
+@@ -1,2 +1,16 @@
+-package com.devsuperior.movieflix.repositories;public class MovieRepository {
++package com.devsuperior.movieflix.repositories;
++
++import com.devsuperior.movieflix.entities.Genre;
++import com.devsuperior.movieflix.entities.Movie;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.Pageable;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.data.jpa.repository.Query;
++
++public interface MovieRepository extends JpaRepository<Movie, Long> {
++    @Query("SELECT obj "
++            + "FROM  Movie obj "
++            + "WHERE :genre IS NULL OR obj.genre = :genre "
++            + "ORDER BY obj.title")
++    Page<Movie> search(Genre genre, Pageable pageable);
+ }
+diff --git a/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/UserRepository.java b/../Desafio Validação e Segurança (2)/src/main/java/com/devsuperior/demo/repositories/UserRepository.java
+deleted file mode 100644
