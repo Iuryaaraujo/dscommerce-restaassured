@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9e7d86e-cb82-4793-9eda-8ba072f87b4e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/CategoryControllerRA.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/OrderControllerRA.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/ProductControllerRA.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/tests/TokenUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/ProductFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../dscommerce-backend-aulas-cap05-3.2.5/src/test/java/com/devsuperior/dscommerce/tests/ProductFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dscommerce-restaassured/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dscommerce-restaassured/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/CategoryControllerRA.java" beforeDir="false" afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/CategoryControllerRA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/ProductControllerRA.java" beforeDir="false" afterPath="$PROJECT_DIR$/dscommerce-restaassured/src/test/java/com/devsuperior/decommerce/controllers/ProductControllerRA.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +25,32 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1722107313" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1722107312" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -41,21 +67,23 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.DscommerceRestaassuredApplication.executor": "Run",
+    "JUnit.CategoryControllerRA.findAllShouldReturnListOfCategories.executor": "Run",
     "JUnit.ProductControllerRA.findByIdShouldReturnProductWhenIdExists.executor": "Run",
+    "JUnit.com.devsuperior.decommerce in dscommerce-restaassured.executor": "Run",
     "JUnit.com.devsuperior.decommerce.controllers in dscommerce-restaassured.executor": "Run",
     "Maven.dscommerce-restaassured [test].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "C:/Temp/dscommerce-restaassured/dscommerce-restaassured/src/test/java",
-    "last_opened_file_path": "C:/Temp/dscommerce-projeto-base-sb3.2.5",
+    "last_opened_file_path": "C:/Temp/dscommerce-backend-aulas-cap05-3.2.5",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.com.devsuperior.decommerce.controllers in dscommerce-restaassured">
+  <component name="RunManager" selected="JUnit.CategoryControllerRA.findAllShouldReturnListOfCategories">
     <configuration name="DscommerceRestaassuredApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.devsuperior.decommerce.DscommerceRestaassuredApplication" />
       <module name="dscommerce-restaassured" />
@@ -65,6 +93,22 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CategoryControllerRA.findAllShouldReturnListOfCategories" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="dscommerce-restaassured" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.devsuperior.decommerce.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.devsuperior.decommerce.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.devsuperior.decommerce.controllers.CategoryControllerRA" />
+      <option name="METHOD_NAME" value="findAllShouldReturnListOfCategories" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -85,6 +129,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="com.devsuperior.decommerce in dscommerce-restaassured" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="dscommerce-restaassured" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.devsuperior.decommerce.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.devsuperior.decommerce" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="com.devsuperior.decommerce.controllers in dscommerce-restaassured" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="dscommerce-restaassured" />
       <extension name="coverage">
@@ -101,6 +159,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CategoryControllerRA.findAllShouldReturnListOfCategories" />
+        <item itemvalue="JUnit.com.devsuperior.decommerce in dscommerce-restaassured" />
         <item itemvalue="JUnit.com.devsuperior.decommerce.controllers in dscommerce-restaassured" />
         <item itemvalue="JUnit.ProductControllerRA.findByIdShouldReturnProductWhenIdExists" />
         <item itemvalue="Application.DscommerceRestaassuredApplication" />
@@ -117,6 +177,17 @@
       <updated>1721999782208</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

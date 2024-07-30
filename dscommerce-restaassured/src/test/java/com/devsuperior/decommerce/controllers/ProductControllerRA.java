@@ -34,13 +34,13 @@ public class ProductControllerRA {
         baseURI = "http://localhost:8080";
 
         clientUsername = "maria@gmail.com";
-        clientPassword="123456";
+        clientPassword = "123456";
         adminUsername = "alex@gmail.com";
         adminPassword = "123456";
 
         clientToken = TokenUtil.obtainAccesToken(clientUsername, clientPassword);
         adminToken = TokenUtil.obtainAccesToken(adminUsername, adminPassword);
-        invalidToken = adminToken + "xpto"; // Invalid token simulation
+        invalidToken = adminToken + "xpto"; // Simulação de token inválida
 
         productName = "Macbook";
 
@@ -85,6 +85,7 @@ public class ProductControllerRA {
                 );
     }
 
+    // findAll deve retornar produtos da página quando o nome do produto estiver vazio
     @Test
     public void findAllShouldReturnPageProductsWhenProductNameIsEmpty() {
 
@@ -96,6 +97,7 @@ public class ProductControllerRA {
                 );
     }
 
+    // findAll deve retornar produtos da página quando o nome do produto não estiver vazio
     @Test
     public void findAllShouldReturnPageProductsWhenProductNameIsNotEmpty() {
 
@@ -110,6 +112,7 @@ public class ProductControllerRA {
                 );
     }
 
+    // findAll deve retornar produtos paginados com preço superior a 2.000
     @Test
     public void findAllShouldReturnPagedProductsWithPriceGreaterThan2000() {
 
